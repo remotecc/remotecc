@@ -1,6 +1,12 @@
 
 # Add executable: remotecc
-set(SRC_COMMON_FILES)
+set(SRC_COMMON_FILES
+    ${CMAKE_CURRENT_LIST_DIR}/core/daemon_service.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/daemon_service.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/daemon_service_config.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/daemon_service_config.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/job.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/core/job.hpp)
 
 add_executable(remotecc
     ${CMAKE_CURRENT_LIST_DIR}/remotecc.cpp

@@ -11,3 +11,11 @@ set(BOOST_IOSTREAMS_ENABLE_BZIP2 OFF CACHE BOOL "Turn off BOOST_IOSTREAMS_ENABLE
 set(BOOST_IOSTREAMS_ENABLE_ZLIB OFF CACHE BOOL "Turn off BOOST_IOSTREAMS_ENABLE_ZLIB" FORCE)
 
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/boost-cmake)
+
+
+# Link to rt library if found
+# Needed by Boost.Interprocess (like shm_open)
+find_library(RT_LIBRARY NAMES rt DOC "librt library")
+if(RT_LIBRARY)
+    imported_target_link_libraries(Boost::boost ${RT_LIBRARY})
+endif()

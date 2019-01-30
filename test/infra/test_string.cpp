@@ -59,21 +59,21 @@ BOOST_AUTO_TEST_SUITE(testsuite_infra)
         BOOST_STATIC_ASSERT(integer_to_string<int, 0>() == "0");
         BOOST_STATIC_ASSERT(integer_to_string<int, 1>() == "1");
         BOOST_STATIC_ASSERT(integer_to_string<int, -1>() == "-1");
-        BOOST_STATIC_ASSERT(integer_to_string<std::int32_t, 0xffffffff, 16>() == "-1");
+        BOOST_STATIC_ASSERT(integer_to_string<std::int32_t, (std::int32_t)0xffffffff, 16>() == "-1");
         BOOST_STATIC_ASSERT(integer_to_string<std::int32_t, 0x7fffffff, 16>() == "7fffffff");
-        BOOST_STATIC_ASSERT(integer_to_string<std::int32_t, 0x80000000, 16>() == "-80000000");
+        BOOST_STATIC_ASSERT(integer_to_string<std::int32_t, (std::int32_t)0x80000000, 16>() == "-80000000");
 
         BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, 0x0, 16>() == "0");
         BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, 0x1, 16>() == "1");
-        BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, -1, 16>() == "ffffffff");
-        BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, -2, 16>() == "fffffffe");
+        BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, (std::uint32_t)-1, 16>() == "ffffffff");
+        BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, (std::uint32_t)-2, 16>() == "fffffffe");
         BOOST_STATIC_ASSERT(integer_to_string<std::uint32_t, 0x80000000, 16>() == "80000000");
 
         BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, 0, 16>() == "0");
         BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, 0x8000000000000000, 16>() == "8000000000000000");
         BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, -0x8000000000000000, 16>() == "8000000000000000");
         BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, 0x7fffffffffffffff, 16>() == "7fffffffffffffff");
-        BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, -0x7fffffffffffffff, 16>() == "8000000000000001");
+        BOOST_STATIC_ASSERT(integer_to_string<std::uint64_t, (std::uint64_t)-0x7fffffffffffffff, 16>() == "8000000000000001");
     }
 
 BOOST_AUTO_TEST_SUITE_END()

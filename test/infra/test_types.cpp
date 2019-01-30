@@ -14,7 +14,8 @@ BOOST_AUTO_TEST_SUITE(testsuite_infra)
         BOOST_STATIC_ASSERT(length_of_array("") == 1);
         BOOST_STATIC_ASSERT(length_of_array("\0") == 2);
         BOOST_STATIC_ASSERT(length_of_array("normal") == 7);
-        BOOST_STATIC_ASSERT(length_of_array({1, 2, 3}) == 3);
+        int dummy_array[] = {1, 2, 3};
+        BOOST_STATIC_ASSERT(length_of_array(dummy_array) == 3);
         BOOST_STATIC_ASSERT(length_of_array(std::array<int, 5>()) == 5);
 
         BOOST_STATIC_ASSERT(length_of_cstr("") == 0);

@@ -4,6 +4,7 @@
 #include "./datetime.hpp"
 #include "./string.hpp"
 #include <cstdio>
+#include <cstdint>
 
 namespace remotecc
 {
@@ -47,7 +48,7 @@ namespace remotecc
                 .value)
 
 #define INFRA_CURRENT_LINE \
-            (::remotecc::infra::integer_to_string<size_t, __LINE__, 10>().value)
+            (::remotecc::infra::integer_to_string<size_t, (size_t)(__LINE__), 10>().value)
 
         }  // namespace details
 

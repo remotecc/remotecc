@@ -61,11 +61,11 @@ BOOST_AUTO_TEST_SUITE(testsuite_infra)
         TEST_SHOULD_SUCCEED(ASSERT_IS_TRUE(true));
         TEST_SHOULD_SUCCEED(ASSERT_IS_FALSE(false));
         TEST_SHOULD_SUCCEED(ASSERT_IS_NULL(nullptr, "Wow! %s", "str"));
-        TEST_SHOULD_SUCCEED(ASSERT_NOT_NULL("whatever", "Wow! %s", "str"));
+        TEST_SHOULD_SUCCEED(ASSERT_NOT_NULL((const void*)"whatever", "Wow! %s", "str"));
 
         TEST_SHOULD_FAIL(ASSERT_IS_TRUE(!true));
         TEST_SHOULD_FAIL(ASSERT_IS_FALSE(!false));
-        TEST_SHOULD_FAIL(ASSERT_IS_NULL("whatever", "Wow! %s", "str"));
+        TEST_SHOULD_FAIL(ASSERT_IS_NULL((const void*)"whatever", "Wow! %s", "str"));
         TEST_SHOULD_FAIL(ASSERT_NOT_NULL(nullptr, "Wow! %s", "str"));
 
         TEST_SHOULD_FAIL(ASSERT_BUG());

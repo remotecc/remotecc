@@ -4,9 +4,10 @@ project(remotecc
     VERSION 0.0.0
     LANGUAGES C CXX)
 
-# Choose _WIN32_WINNT definition on platform WINDOWS (OS:　Windows or Cygwin)
+
+# Choose _WIN32_WINNT definition on platform WINDOWS (OS: Windows or Cygwin)
 if (WIN32 OR CYGWIN)
-    set(REMOTECC_WIN32_WINNT "_WIN32_WINNT_WIN7" CACHE STRING
+    set(REMOTECC_WIN32_WINNT "0x0601" CACHE STRING
         "Define _WIN32_WINNT on Windows or Cygwin (default: Windows 7)")
 endif()
 
@@ -15,6 +16,14 @@ endif()
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(cmake/Workaround.cmake)
 include(cmake/ImportedTarget.cmake)
+
+
+# Policy CMP0079: (CMake >= 3.13.0)
+# ``target_link_libraries()`` allows use with targets in other directories.
+# No matter OLD or NEW. Just set one to make CMake happy.
+if (RCC_CMAKE_VERSION_AT_LEAST_3_13_0)
+    cmake_policy(SET CMP0079 NEW)
+endif()
 
 
 # Treat warning as error (default: OFF)
@@ -51,7 +60,12 @@ function(rcc_set_common_properties Target)
     string(TOUPPER ${Target} TARGET_UPPERCASE)
     target_compile_definitions(${Target} PRIVATE __THIS_IS_${TARGET_UPPERCASE}__=1)
 
-    # Add some definitions on platform WINDOWS (OS:　Windows or Cygwin)
+    # Link with thread library
+    set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${Target} PRIVATE Threads::Threads)
+
+    # Add some definitions on platform WINDOWS (OS: Windows or Cygwin)
     if (WIN32 OR CYGWIN)
         target_compile_definitions(${Target} PRIVATE _WIN32_WINNT=${REMOTECC_WIN32_WINNT})
         target_compile_definitions(${Target} PRIVATE NOMINMAX)
@@ -74,7 +88,16 @@ function(rcc_set_common_properties Target)
 
     # Enable all compiler warnings by default
     if (MSVC)
+        # Remove the default warning level (if any)
+        # See: https://stackoverflow.com/questions/45995784/how-to-set-compiler-options-with-cmake-in-visual-studio-2017
+        # TODO: need confirmation
+        string(REGEX REPLACE "/W[0-4]" "" CMAKE_CXX_FLAGS_INIT "${CMAKE_CXX_FLAGS_INIT}")
+        # Then set /W4 for MSVC
         target_compile_options(${Target} PRIVATE "/W4")
+
+        # Disable C4127: conditional expression is constant
+        # https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-4-c4127
+        target_compile_options(${Target} PRIVATE "/wd4127")
     else()
         target_compile_options_if_available(${Target} PRIVATE "-Wall")
         target_compile_options_if_available(${Target} PRIVATE "-Wextra")
