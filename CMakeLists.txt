@@ -18,14 +18,6 @@ include(cmake/Workaround.cmake)
 include(cmake/ImportedTarget.cmake)
 
 
-# Policy CMP0079: (CMake >= 3.13.0)
-# ``target_link_libraries()`` allows use with targets in other directories.
-# No matter OLD or NEW. Just set one to make CMake happy.
-if (RCC_CMAKE_VERSION_AT_LEAST_3_13_0)
-    cmake_policy(SET CMP0079 NEW)
-endif()
-
-
 # Treat warning as error (default: OFF)
 # Just enable this when doing continuous integration
 option(REMOTECC_TREAT_WARNINGS_AS_ERRORS
