@@ -84,9 +84,12 @@ else()
     # remotecc is built as "embedded" project: disable unit-test by default
     set(_RCC_ENABLE_UNITTEST_DEFAULT OFF)
 endif()
-option(REMOTECC_ENABLE_UNITTEST "Enable remotecc unit tests" _RCC_ENABLE_UNITTEST_DEFAULT)
+option(REMOTECC_ENABLE_UNITTEST "Enable remotecc unit tests" ${_RCC_ENABLE_UNITTEST_DEFAULT})
 
 if (REMOTECC_ENABLE_UNITTEST)
+    message(STATUS "Unit tests are enabled")
     enable_testing()
     include(test/CMakeLists.txt)
+else()
+    message(STATUS "Unit tests are disabled")
 endif ()
