@@ -17,6 +17,16 @@ include(cmake/Workaround.cmake)
 include(cmake/ImportedTarget.cmake)
 
 
+# Treat warning as error (default: OFF)
+# Just enable this when doing continuous integration
+option(REMOTECC_TREAT_WARNINGS_AS_ERRORS
+    "Treat compiler warnings as errors, most for CI only (default: OFF)"
+    OFF)
+if (REMOTECC_TREAT_WARNINGS_AS_ERRORS)
+    message(STATUS "NOTE: Treat all warnings as errors!")
+endif()
+
+
 # Add thirdparty libraries
 include(thirdparty/CMakeLists.txt)
 
@@ -64,11 +74,28 @@ function(rcc_set_common_properties Target)
 
     # Enable all compiler warnings by default
     if (MSVC)
-        target_compile_options_if_available(${Target} PRIVATE "/W4")
+        target_compile_options(${Target} PRIVATE "/W4")
     else()
         target_compile_options_if_available(${Target} PRIVATE "-Wall")
         target_compile_options_if_available(${Target} PRIVATE "-Wextra")
     endif()
+
+    # Treat warnings as errors?
+    if (REMOTECC_TREAT_WARNINGS_AS_ERRORS)
+        if (MSVC)
+            # MSVC has "/WX" for both the compiler and the linker
+            # (Compiler) /WX: Treat all compiler warnings as errors
+            # (Linker) /WX: Treat linker warnings as errors
+            # See:
+            #   https://docs.microsoft.com/en-us/cpp/build/reference/compiler-option-warning-level
+            #   https://docs.microsoft.com/en-us/cpp/build/reference/wx-treat-linker-warnings-as-errors
+            target_compile_options(${Target} PRIVATE "/WX")
+            target_link_options(${Target} PRIVATE "/WX")
+        else()
+            target_compile_options_if_available(${Target} PRIVATE "-Werror")
+        endif()
+    endif()
+
 endfunction()
 
 
@@ -84,7 +111,9 @@ else()
     # remotecc is built as "embedded" project: disable unit-test by default
     set(_RCC_ENABLE_UNITTEST_DEFAULT OFF)
 endif()
-option(REMOTECC_ENABLE_UNITTEST "Enable remotecc unit tests" ${_RCC_ENABLE_UNITTEST_DEFAULT})
+option(REMOTECC_ENABLE_UNITTEST
+    "Enable remotecc unit tests"
+    ${_RCC_ENABLE_UNITTEST_DEFAULT})
 
 if (REMOTECC_ENABLE_UNITTEST)
     message(STATUS "Unit tests are enabled")

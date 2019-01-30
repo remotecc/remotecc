@@ -2,6 +2,7 @@
 #define _INFRA_HPP_INCLUDED_
 
 #include <boost/predef.h>
+#include <boost/core/ignore_unused.hpp>
 
 #include "infra/macro.hpp"
 #include "infra/types.hpp"

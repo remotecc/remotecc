@@ -16,7 +16,8 @@ rcc_set_common_properties(remoteccd)
 
 # remoteccd supports using MPI for daemon to daemon communication
 option(REMOTECC_DAEMON_MPI_SUPPORT
-    "Support using MPI for daemon to daemon communication" ON)
+    "Support using MPI for daemon to daemon communication"
+    ON)
 if (REMOTECC_DAEMON_MPI_SUPPORT)
     find_package(MPI)
     if (MPI_CXX_FOUND)

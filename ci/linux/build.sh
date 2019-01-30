@@ -93,7 +93,9 @@ docker exec --tty "$CONTAINER" bash -c '
     set -xe
     mkdir /build
     cd /build
-    cmake /remotecc -DCMAKE_BUILD_TYPE="$CI_BUILD_TYPE"
-    make -j"$[NCPU+2]"
+    cmake /remotecc \
+        -DCMAKE_BUILD_TYPE="$CI_BUILD_TYPE" \
+        -DREMOTECC_TREAT_WARNINGS_AS_ERRORS=ON
+    make -j"$[NCPU+2]" VERBOSE=1
     ctest -VV
     '
