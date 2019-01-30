@@ -8,6 +8,12 @@ target_include_directories(infra BEFORE INTERFACE ${CMAKE_CURRENT_LIST_DIR})
 target_link_libraries(infra INTERFACE Boost::boost)
 
 target_sources(infra INTERFACE
+    ${CMAKE_CURRENT_LIST_DIR}/infra/assertion.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/infra/datetime.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/infra/logging.hpp
     ${CMAKE_CURRENT_LIST_DIR}/infra/macro.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/infra/numeric.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/infra/string.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/infra/types.hpp
     ${CMAKE_CURRENT_LIST_DIR}/infra.cpp
     ${CMAKE_CURRENT_LIST_DIR}/infra.hpp)

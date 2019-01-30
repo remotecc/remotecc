@@ -4,5 +4,11 @@
 #include <boost/predef.h>
 
 #include "infra/macro.hpp"
+#include "infra/types.hpp"
+#include "infra/numeric.hpp"
+#include "infra/string.hpp"
+#include "infra/datetime.hpp"
+#include "infra/logging.hpp"
+#include "infra/assertion.hpp"
 
 #endif  // !defined(_INFRA_HPP_INCLUDED_)
