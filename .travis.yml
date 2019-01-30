@@ -1,0 +1,33 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      services:
+        - docker
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=gcc
+        - CI_COMPILER_VERSION=5.3
+      script:
+        - ./ci/linux/build.sh
+        
+    - os: linux
+      dist: xenial
+      services:
+        - docker
+      env:
+        - CI_CMAKE_VERSION=3.5.0 CI_COMPILER_TYPE=gcc CI_COMPILER_VERSION=5.4
+      script:
+        - ./ci/linux/build.sh
+        
+    - os: linux
+      dist: xenial
+      services:
+        - docker
+      env:
+        - CI_CMAKE_VERSION=3.5.0 CI_COMPILER_TYPE=gcc CI_COMPILER_VERSION=5.5
+      script:
+        - ./ci/linux/build.sh
+
