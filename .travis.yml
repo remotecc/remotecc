@@ -199,4 +199,158 @@ matrix:
         - ./ci/linux/build.sh
       services:
         - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=3.5
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=3.9
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=4.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=5.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=6.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=7
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.5.0
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=8
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=3.5
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=3.9
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=4.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=5.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=6.0
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=7
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
+    - dist: xenial
+      env:
+        - CI_CMAKE_VERSION=3.13.3
+        - CI_COMPILER_TYPE=clang
+        - CI_COMPILER_VERSION=8
+        - CI_BUILD_TYPE=Release
+      os: linux
+      script:
+        - ./ci/linux/build.sh
+      services:
+        - docker
 

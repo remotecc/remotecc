@@ -62,9 +62,21 @@ def main():
         "7.3", "7.4",
         "8.1", "8.2",
         ]
+    CLANG_VERSIONS = [
+        #"3.5", "3.6", "3.7", "3.8", "3.9",
+        "3.5", "3.9",
+        "4.0",
+        "5.0",
+        "6.0",
+        "7",  # not "7.0"
+        "8",  # not "8.0"
+        ]
     for cmake_version in CMAKE_VERSIONS:
         for gcc_version in GCC_VERSIONS:
             root["matrix"]["include"].append(generate_linux(cmake_version, "gcc", gcc_version, "Release"))
+    for cmake_version in CMAKE_VERSIONS:
+        for clang_version in CLANG_VERSIONS:
+            root["matrix"]["include"].append(generate_linux(cmake_version, "clang", clang_version, "Release"))
 
     travis_yml = yaml.dump(root, Dumper=MyDumper, default_flow_style=False)
     print(travis_yml)
