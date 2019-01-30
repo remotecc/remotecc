@@ -12,12 +12,14 @@ add_executable(remotecc
     ${CMAKE_CURRENT_LIST_DIR}/remotecc.cpp
     ${SRC_COMMON_FILES})
 rcc_set_common_properties(remotecc)
+target_include_directories(remotecc PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
 # Add executable: remoteccd
 add_executable(remoteccd
     ${CMAKE_CURRENT_LIST_DIR}/remoteccd.cpp
     ${SRC_COMMON_FILES})
 rcc_set_common_properties(remoteccd)
+target_include_directories(remoteccd PRIVATE ${CMAKE_CURRENT_LIST_DIR})
 
 
 # remoteccd supports using MPI for daemon to daemon communication

@@ -88,11 +88,10 @@ namespace remotecc
         }
         catch (const interprocess_exception& ex)
         {
-            dispose();
-
             if (ex.get_error_code() == error_code_t::already_exists_error)
             {
                 LOG_ERROR("daemon already exists. Is daemon already started? (name: %s)", _name.c_str());
+                dispose();
                 return false;
             }
             else
@@ -102,6 +101,7 @@ namespace remotecc
                     (unsigned long long)_config.shmem_size,
                     ex.what(), ex.get_error_code(), ex.get_native_error(),
                     _name.c_str());
+                dispose();
                 throw;  // throw any exception other than already_exists_error
             }
         }
@@ -112,11 +112,10 @@ namespace remotecc
             std::nothrow)();
         if (_daemon_service_info == nullptr)
         {
-            dispose();
-
             LOG_FATAL("Construct daemon_service_info_t failed. Shared memory too small?"
                       "shmem_size(): %llu (name: %s)",
                       (unsigned long long)shmem_size(), _name.c_str());
+            dispose();
             return false;
         }
 
@@ -154,11 +153,10 @@ namespace remotecc
         }
         catch (const interprocess_exception& ex)
         {
-            dispose();
-
             if (ex.get_error_code() == error_code_t::not_found_error)
             {
                 LOG_ERROR("Can't find daemon. Is daemon started? (name: %s)", _name.c_str());
+                dispose();
                 return false;
             }
             else
@@ -166,6 +164,7 @@ namespace remotecc
                 LOG_ERROR("Unexpected interprocess_exception! "
                           "what(): %s. error_code: %d, native_error_code: %d (name: %s)",
                           ex.what(), (int)ex.get_error_code(), (int)ex.get_native_error(), _name.c_str());
+                dispose();
                 throw;  // throw any exception other than not_found_error
             }
         }
@@ -175,8 +174,8 @@ namespace remotecc
         _daemon_service_info = pair.first;
         if (_daemon_service_info == nullptr)
         {
-            dispose();
             LOG_ERROR("Can't find daemon service info. Is daemon initializing?");
+            dispose();
             return false;
         }
         ASSERT_EQ(pair.second, (size_t)1);  // allocated object count, should be 1
