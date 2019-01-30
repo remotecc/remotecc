@@ -3,6 +3,7 @@
 
 #include "./types.hpp"
 #include "./numeric.hpp"
+#include <boost/static_assert.hpp>
 #include <cstddef>
 
 namespace remotecc
@@ -162,7 +163,7 @@ namespace remotecc
             template<size_t _Start>
             constexpr auto sub_string() const noexcept
             {
-                INFRA_STATIC_ASSERT(_Start < _Size);
+                BOOST_STATIC_ASSERT(_Start < _Size);
                 return string<_Size - _Start, TCh>(value, _Start);
             }
 
@@ -173,11 +174,11 @@ namespace remotecc
             constexpr auto sub_string() const noexcept
             {
                 // Make sure not overflow!
-                INFRA_STATIC_ASSERT(_Start + _Length >= _Start);
-                INFRA_STATIC_ASSERT(_Start + _Length >= _Length);
+                BOOST_STATIC_ASSERT(_Start + _Length >= _Start);
+                BOOST_STATIC_ASSERT(_Start + _Length >= _Length);
 
-                INFRA_STATIC_ASSERT(_Start < _Size);
-                INFRA_STATIC_ASSERT(_Start + _Length < _Size);
+                BOOST_STATIC_ASSERT(_Start < _Size);
+                BOOST_STATIC_ASSERT(_Start + _Length < _Size);
                 return string<_Length + 1, TCh>(value, _Start);
             }
 
@@ -187,7 +188,7 @@ namespace remotecc
             template<size_t _Length>
             constexpr auto pad_right(const TCh ch) const noexcept
             {
-                INFRA_STATIC_ASSERT(_Length + 1 >= _Size);
+                BOOST_STATIC_ASSERT(_Length + 1 >= _Size);
 
                 string<_Length + 1, TCh> result(ch);
                 result.copy_from(0, value, 0, length());
@@ -200,7 +201,7 @@ namespace remotecc
             template<size_t _Length>
             constexpr auto pad_left(const TCh ch) const noexcept
             {
-                INFRA_STATIC_ASSERT(_Length + 1 >= _Size);
+                BOOST_STATIC_ASSERT(_Length + 1 >= _Size);
 
                 string<_Length + 1, TCh> result(ch);
                 result.copy_from(_Length - length(), value, 0, length());
@@ -253,16 +254,16 @@ namespace remotecc
             }
 
 
-#define _REMOTECC_INFRA_STRING_COMP(Op) \
+#define _REMOTECC_INFRA_STRING_COMP(_Op_) \
             template<size_t _NStr> \
-            constexpr bool operator Op(const TCh (&str)[_NStr]) const noexcept \
+            constexpr bool operator _Op_(const TCh (&str)[_NStr]) const noexcept \
             { \
-                return compare_with(str) Op 0; \
+                return compare_with(str) _Op_ 0; \
             } \
             template<size_t _NStr> \
-            constexpr bool operator Op(const string<_NStr, TCh>& str) const noexcept \
+            constexpr bool operator _Op_(const string<_NStr, TCh>& str) const noexcept \
             { \
-                return operator Op(str.value); \
+                return operator _Op_(str.value); \
             }
 
             _REMOTECC_INFRA_STRING_COMP(<)
@@ -320,8 +321,8 @@ namespace remotecc
             template<typename TU, TU _Value, size_t _Base>
             struct positive_to_string<TU, _Value, /*_IsZero*/false, _Base>
             {
-                INFRA_STATIC_ASSERT(_Base > 0);
-                INFRA_STATIC_ASSERT(_Base <= 36);
+                BOOST_STATIC_ASSERT(_Base > 0);
+                BOOST_STATIC_ASSERT(_Base <= 36);
                 static constexpr const auto value =
                     positive_to_string<TU, _Value / _Base, (_Value / _Base == 0), _Base>::value +
                     "0123456789abcdefghijklmnopqrstuvwxyz"[_Value % _Base];
@@ -338,7 +339,7 @@ namespace remotecc
                 template<TUInt _Value>
                 static constexpr auto convert()
                 {
-                    INFRA_STATIC_ASSERT(_Value > 0);
+                    BOOST_STATIC_ASSERT(_Value > 0);
                     return positive_to_string<
                         TUInt,
                         /*_IsZero*/ _Value,
@@ -353,7 +354,7 @@ namespace remotecc
                 template<TInt _Value>
                 static constexpr auto convert()
                 {
-                    INFRA_STATIC_ASSERT(_Value == 0);
+                    BOOST_STATIC_ASSERT(_Value == 0);
                     return make_string("0");
                 }
             };
@@ -383,7 +384,7 @@ namespace remotecc
         template<typename TInt, TInt _Value, size_t _Base = 10>
         constexpr auto integer_to_string() noexcept
         {
-            //INFRA_STATIC_ASSERT(std::is_signed<TInt>::value || std::is_unsigned<TInt>::value);
+            //BOOST_STATIC_ASSERT(std::is_signed<TInt>::value || std::is_unsigned<TInt>::value);
             return details::integer_to_string_helper<
                 TInt,
                 /*_IsZero*/ (_Value == 0),

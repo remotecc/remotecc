@@ -58,17 +58,17 @@ namespace remotecc
             struct printf_formatter : printf_formatter<raw_type<T>>
             { };
 
-#define _REMOTECC_INFRA_DECLARE_TYPE_PRINTF(Type, StrFormat, /*template*/...) \
+#define _REMOTECC_INFRA_DECLARE_TYPE_PRINTF(_Type_, _StrFormat_, /*template*/...) \
             template<__VA_ARGS__> \
-            struct printf_formatter<Type> \
+            struct printf_formatter<_Type_> \
             { \
-                static constexpr const char value[] = (StrFormat); \
+                static constexpr const char value[] = (_StrFormat_); \
             }; \
             \
             template<__VA_ARGS__> \
-            struct printf_formatter<const Type> \
+            struct printf_formatter<const _Type_> \
             { \
-                static constexpr const char value[] = (StrFormat); \
+                static constexpr const char value[] = (_StrFormat_); \
             }
             _REMOTECC_INFRA_DECLARE_TYPE_PRINTF(std::uint16_t, "%" PRIu16);
             _REMOTECC_INFRA_DECLARE_TYPE_PRINTF(std::uint32_t, "%" PRIu32);
@@ -181,50 +181,50 @@ namespace remotecc
 
 #if INFRA_IDE_MODE
 
-#define ASSERT(What, ...)           printf("" __VA_ARGS__)
-#define ASSERT_IS_NULL(What, ...)   printf("" __VA_ARGS__)
-#define ASSERT_NOT_NULL(What, ...)  printf("" __VA_ARGS__)
-#define ASSERT_IS_TRUE(What, ...)   printf("" __VA_ARGS__)
-#define ASSERT_IS_FALSE(What, ...)  printf("" __VA_ARGS__)
-#define ASSERT_BUG(...)             printf("" __VA_ARGS__)
+#define ASSERT(_What_, ...)             printf("" __VA_ARGS__)
+#define ASSERT_IS_NULL(_What_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_NOT_NULL(_What_, ...)    printf("" __VA_ARGS__)
+#define ASSERT_IS_TRUE(_What_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_IS_FALSE(_What_, ...)    printf("" __VA_ARGS__)
+#define ASSERT_BUG(...)                 printf("" __VA_ARGS__)
 
 #else  // INFRA_IDE_MODE
 
 /* Use JUST to work around MSVC's strange behavior with __VA_ARGS__. */ \
 /* See: https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly */ \
-#define ASSERT(What, ...)           JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT", What, #What, "" __VA_ARGS__))
-#define ASSERT_IS_NULL(What, ...)   JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_IS_NULL", ((What) == nullptr), #What, "" __VA_ARGS__))
-#define ASSERT_NOT_NULL(What, ...)  JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_NOT_NULL", ((What) != nullptr), #What, "" __VA_ARGS__))
-#define ASSERT_IS_TRUE(What, ...)   JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_TRUE", ((What) == true), #What, "" __VA_ARGS__))
-#define ASSERT_IS_FALSE(What, ...)  JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_FALSE", ((What) == false), #What, "" __VA_ARGS__))
-#define ASSERT_BUG(...)             JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_BUG", false, "", "Should not reach here! " __VA_ARGS__))
+#define ASSERT(_What_, ...)             JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT", (_What_), #_What_, "" __VA_ARGS__))
+#define ASSERT_IS_NULL(_What_, ...)     JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_IS_NULL", ((_What_) == nullptr), #_What_, "" __VA_ARGS__))
+#define ASSERT_NOT_NULL(_What_, ...)    JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_NOT_NULL", ((_What_) != nullptr), #_What_, "" __VA_ARGS__))
+#define ASSERT_IS_TRUE(_What_, ...)     JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_TRUE", ((_What_) == true), #_What_, "" __VA_ARGS__))
+#define ASSERT_IS_FALSE(_What_, ...)    JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_FALSE", ((_What_) == false), #_What_, "" __VA_ARGS__))
+#define ASSERT_BUG(...)                 JUST(_REMOTECC_INFRA_ASSERT_1("ASSERT_BUG", false, "", "Should not reach here! " __VA_ARGS__))
 
 #endif  // INFRA_IDE_MODE
 
 
-#define _REMOTECC_INFRA_ASSERT_COMPARE_2(Name, Comp, Left, Right, StrLeft, StrRight, UserMsg, ...) \
+#define _REMOTECC_INFRA_ASSERT_COMPARE_2(_Name_, _Comp_, _Left_, _Right_, _StrLeft_, _StrRight_, _UserMsg_, ...) \
     do { \
-        auto left_value = (Left); \
-        auto right_value = (Right); \
-        if (!(::remotecc::infra::details::Comp<decltype(Left), decltype(Right)> \
-            ::compare(left_value, right_value))) \
+        auto _left_value_ = (_Left_); \
+        auto _right_value_ = (_Right_); \
+        if (!(::remotecc::infra::details::_Comp_<decltype(_Left_), decltype(_Right_)> \
+            ::compare(_left_value_, _right_value_))) \
         { \
-            ::remotecc::infra::simple_date_time_t now { }; \
-            (void)now_date_time(&now); \
-            static constexpr const auto message = ::remotecc::infra::make_string("") + \
+            ::remotecc::infra::simple_date_time_t _now_ { }; \
+            (void)now_date_time(&_now_); \
+            static constexpr const auto _message_ = ::remotecc::infra::make_string("") + \
                 "[%04u-%02u-%02u %02u:%02u:%02u] [PANIC] " + \
                 "[" + INFRA_CURRENT_FILE + ":" + INFRA_CURRENT_LINE + "] " + \
-                Name + "(" + StrLeft + ", " + StrRight + ") failed. " + \
-                "LHS: " + StrLeft + " = " + ::remotecc::infra::details::printf_formatter<decltype(Left)>::value + ", " + \
-                "RHS: " + StrRight + " = " + ::remotecc::infra::details::printf_formatter<decltype(Right)>::value + ". " + \
-                UserMsg + "\n"; \
+                _Name_ + "(" + _StrLeft_ + ", " + _StrRight_ + ") failed. " + \
+                "LHS: " + _StrLeft_ + " = " + ::remotecc::infra::details::printf_formatter<decltype(_Left_)>::value + ", " + \
+                "RHS: " + _StrRight_ + " = " + ::remotecc::infra::details::printf_formatter<decltype(_Right_)>::value + ". " + \
+                _UserMsg_ + "\n"; \
             /* For MSVC, we don't need to "EXPAND" __VA_ARGS__ here, */ \
             /* even if with its strange behavior with __VA_ARGS__. Don't now why. */ \
             /* See: https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly */ \
-            fprintf(::remotecc::infra::details::__logging_file, message.value, \
-                now.year, now.month, now.day_of_month, now.hour, now.minute, now.second, \
-                ::remotecc::infra::details::printf_transformer::trans(left_value), \
-                ::remotecc::infra::details::printf_transformer::trans(right_value), \
+            fprintf(::remotecc::infra::details::__logging_file, _message_.value, \
+                _now_.year, _now_.month, _now_.day_of_month, _now_.hour, _now_.minute, _now_.second, \
+                ::remotecc::infra::details::printf_transformer::trans(_left_value_), \
+                ::remotecc::infra::details::printf_transformer::trans(_right_value_), \
                 ##__VA_ARGS__); \
             ::remotecc::infra::details::force_terminate(); \
         } \
@@ -233,37 +233,37 @@ namespace remotecc
 
 #if INFRA_IDE_MODE
 
-#define ASSERT_LT(Left, Right, ...)     printf("" __VA_ARGS__)
-#define ASSERT_LE(Left, Right, ...)     printf("" __VA_ARGS__)
-#define ASSERT_GT(Left, Right, ...)     printf("" __VA_ARGS__)
-#define ASSERT_GE(Left, Right, ...)     printf("" __VA_ARGS__)
-#define ASSERT_EQ(Left, Right, ...)     printf("" __VA_ARGS__)
-#define ASSERT_NE(Left, Right, ...)     printf("" __VA_ARGS__)
+#define ASSERT_LT(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_LE(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_GT(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_GE(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_EQ(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
+#define ASSERT_NE(_Left_, _Right_, ...)     printf("" __VA_ARGS__)
 
-#define ASSERT_STR_LT(Left, Right, ...) printf("" __VA_ARGS__)
-#define ASSERT_STR_LE(Left, Right, ...) printf("" __VA_ARGS__)
-#define ASSERT_STR_GT(Left, Right, ...) printf("" __VA_ARGS__)
-#define ASSERT_STR_GE(Left, Right, ...) printf("" __VA_ARGS__)
-#define ASSERT_STR_EQ(Left, Right, ...) printf("" __VA_ARGS__)
-#define ASSERT_STR_NE(Left, Right, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_LT(_Left_, _Right_, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_LE(_Left_, _Right_, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_GT(_Left_, _Right_, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_GE(_Left_, _Right_, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_EQ(_Left_, _Right_, ...) printf("" __VA_ARGS__)
+#define ASSERT_STR_NE(_Left_, _Right_, ...) printf("" __VA_ARGS__)
 
 #else  // INFRA_IDE_MODE
 
 /* Use JUST to work around MSVC's strange behavior with __VA_ARGS__. */ \
 /* See: https://stackoverflow.com/questions/5134523/msvc-doesnt-expand-va-args-correctly */ \
-#define ASSERT_LT(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_LT", general_comparer_LT, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_LE(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_LE", general_comparer_LE, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_GT(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_GT", general_comparer_GT, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_GE(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_GE", general_comparer_GE, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_EQ(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_EQ", general_comparer_EQ, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_NE(Left, Right, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_NE", general_comparer_NE, Left, Right, #Left, #Right, "" __VA_ARGS__))
+#define ASSERT_LT(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_LT", general_comparer_LT, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_LE(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_LE", general_comparer_LE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_GT(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_GT", general_comparer_GT, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_GE(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_GE", general_comparer_GE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_EQ(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_EQ", general_comparer_EQ, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_NE(_Left_, _Right_, ...)     JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_NE", general_comparer_NE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
 
-#define ASSERT_STR_LT(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_LT", string_comparer_LT, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_STR_LE(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_LE", string_comparer_LE, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_STR_GT(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_GT", string_comparer_GT, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_STR_GE(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_GE", string_comparer_GE, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_STR_EQ(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_EQ", string_comparer_EQ, Left, Right, #Left, #Right, "" __VA_ARGS__))
-#define ASSERT_STR_NE(Left, Right, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_NE", string_comparer_NE, Left, Right, #Left, #Right, "" __VA_ARGS__))
+#define ASSERT_STR_LT(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_LT", string_comparer_LT, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_STR_LE(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_LE", string_comparer_LE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_STR_GT(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_GT", string_comparer_GT, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_STR_GE(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_GE", string_comparer_GE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_STR_EQ(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_EQ", string_comparer_EQ, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
+#define ASSERT_STR_NE(_Left_, _Right_, ...) JUST(_REMOTECC_INFRA_ASSERT_COMPARE_2("ASSERT_STR_NE", string_comparer_NE, (_Left_), (_Right_), #_Left_, #_Right_, "" __VA_ARGS__))
 
 #endif  // INFRA_IDE_MODE
 
