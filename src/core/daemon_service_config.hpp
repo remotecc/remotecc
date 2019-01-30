@@ -26,7 +26,7 @@ namespace remotecc
         std::atomic_bool daemon_ready;
         int daemon_pid = 0;
         std::uint64_t daemon_create_timestamp = 0;
-        volatile std::atomic_uint64_t now_msec;
+        volatile std::atomic<std::uint64_t> now_msec;
 
         daemon_service_info_t() noexcept
             : daemon_ready(false),
