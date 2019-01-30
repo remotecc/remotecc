@@ -34,7 +34,7 @@ if (REMOTECC_DAEMON_MPI_SUPPORT)
         # If MPI is detected, add MPI related options to remoteccd
         # CMake adds imported target MPI::MPI_<lang> from 3.9.0
         # See https://cmake.org/cmake/help/v3.9/release/3.9.html#modules
-        if (RCC_CMAKE_VERSION_AT_LEAST_3_9_0)
+        if (TARGET MPI::MPI_CXX)
             target_link_libraries(remoteccd PRIVATE MPI::MPI_CXX)
         else()
             target_include_directories(remoteccd PRIVATE ${MPI_CXX_INCLUDE_PATH})
