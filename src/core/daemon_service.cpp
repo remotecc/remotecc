@@ -211,11 +211,15 @@ namespace remotecc
         // If we created the shmem, and the creation succeeded, remove it...
         if (_shmem_is_create && shmem_existed)
         {
-            LOG_DBG5("daemon_service::dispose remove shared_memory_object (name: %s)", _name.c_str());
-            bool success = shared_memory_object::remove(_fullname.c_str());
-            if (!success)
+            // Remove only if we are using managed_shared_memory (but not managed_windows_shared_memory)
+            if (std::is_same<managed_shared_memory_type, managed_shared_memory>::value)
             {
-                LOG_ERROR("Remove shared_memory_object failed. (name: %s)", _name.c_str());
+                LOG_DBG5("daemon_service::dispose remove managed_shared_memory (name: %s)", _name.c_str());
+                bool success = managed_shared_memory::remove(_fullname.c_str());
+                if (!success)
+                {
+                    LOG_ERROR("Remove managed_shared_memory failed. (name: %s)", _name.c_str());
+                }
             }
         }
     }
