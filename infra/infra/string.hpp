@@ -248,7 +248,7 @@ namespace remotecc
              * Append "str" to current string to form a new string.
              */
             template<size_t _NStr>
-            constexpr string<(_Size - 1) + (_NStr - 1) + 1, TCh> operator+(const string<_NStr, TCh>& str) const noexcept
+            constexpr string<(_Size - 1) + (_NStr - 1) + 1, TCh> operator+(string<_NStr, TCh> str) const noexcept
             {
                 return operator+(str.value);
             }
@@ -261,7 +261,7 @@ namespace remotecc
                 return compare_with(str) _Op_ 0; \
             } \
             template<size_t _NStr> \
-            constexpr bool operator _Op_(const string<_NStr, TCh>& str) const noexcept \
+            constexpr bool operator _Op_(string<_NStr, TCh> str) const noexcept \
             { \
                 return operator _Op_(str.value); \
             }
@@ -301,7 +301,7 @@ namespace remotecc
          * just return a copy of itself.
          */
         template<typename TCh, size_t _Size>
-        constexpr string<_Size, TCh> make_string(const string<_Size, TCh>& str) noexcept
+        constexpr string<_Size, TCh> make_string(string<_Size, TCh> str) noexcept
         {
             return str;
         }
