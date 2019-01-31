@@ -131,8 +131,10 @@ namespace remotecc
             template<size_t _NChars>
             constexpr size_t find_first_of(const TCh (&chars)[_NChars], size_t start = 0) const noexcept
             {
-                for (size_t pos = start; pos < length(); ++pos) {
-                    for (size_t i = 0; i < length_of_cstr(chars); ++i) {
+                for (size_t pos = start; pos < length(); ++pos)
+                {
+                    for (size_t i = 0; i < length_of_cstr(chars); ++i)
+                    {
                         if (value[pos] == chars[i]) return pos;
                     }
                 }
@@ -149,8 +151,10 @@ namespace remotecc
             template<size_t _NChars>
             constexpr size_t find_last_of(const TCh (&chars)[_NChars], size_t start = _Size - 1) const noexcept
             {
-                for (size_t pos = min(start, length() - 1); pos != (size_t)-1; --pos) {
-                    for (size_t i = 0; i < length_of_cstr(chars); ++i) {
+                for (size_t pos = min(start, length() - 1); pos != (size_t)-1; --pos)
+                {
+                    for (size_t i = 0; i < length_of_cstr(chars); ++i)
+                    {
                         if (value[pos] == chars[i]) return pos;
                     }
                 }
@@ -213,7 +217,8 @@ namespace remotecc
              */
             constexpr bool contains_no_null_char() const noexcept
             {
-                for (size_t pos = 0; pos < length(); ++pos) {
+                for (size_t pos = 0; pos < length(); ++pos)
+                {
                     if (value[pos] == NULL_CHAR) return false;
                 }
                 return true;

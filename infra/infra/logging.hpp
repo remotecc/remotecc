@@ -74,7 +74,8 @@ namespace remotecc
 
 #define _REMOTECC_LOG_INTERNAL(_Level_, _What_, ...) \
     do { \
-        if (::remotecc::infra::details::__logging_verbosity >= ::remotecc::infra::log_level::LOG_LEVEL_##_Level_) { \
+        if (::remotecc::infra::details::__logging_verbosity >= ::remotecc::infra::log_level::LOG_LEVEL_##_Level_) \
+        { \
             ::remotecc::infra::simple_date_time_t _now_ { }; \
             (void)now_date_time(&_now_); \
             /* Here: pad to 7 characters as max log level is 5 characters */ \
