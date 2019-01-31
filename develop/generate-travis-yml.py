@@ -19,6 +19,11 @@ class MyDumper(yaml.Dumper):
 def main():
     root = {
         "language": "cpp",
+        "branches": {
+            "except": [
+                "/^t(e?)mp(/.+)?$/",  # ignore branches: t[e]mp, t[e]mp/xxx
+            ]
+        },
         "matrix": {
             "include": [],
         },
@@ -32,10 +37,10 @@ def main():
                 "docker"
             ],
             "env": [
-                "CI_CMAKE_VERSION=%s" % cmake_version,
                 "CI_COMPILER_TYPE=%s" % compiler_type,
                 "CI_COMPILER_VERSION=%s" % compiler_version,
                 "CI_BUILD_TYPE=%s" % build_type,
+                "CI_CMAKE_VERSION=%s" % cmake_version,
             ],
             "script": [
                 "./ci/linux/build.sh"
